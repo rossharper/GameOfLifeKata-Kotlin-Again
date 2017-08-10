@@ -2,10 +2,7 @@ typealias Population = Set<Cell>
 fun populationOf(vararg cells: Cell) : Population = setOf(*cells)
 
 class Life(val population: Population) {
-    fun evolved(): Life {
-        println("Pop: " + population)
-        return Life(population.survivors.union(population.newBirths))
-    }
+    fun evolved() = Life(population.survivors.union(population.newBirths))
 }
 
 private val Population.survivors : Population
@@ -33,21 +30,10 @@ private infix fun Cell.isInVerticalNeighbouringRangeOf(cell: Cell)
         = this.y - cell.y in -1..1
 
 private val Population.newBirths: Population
-    get() {
-        return this.flatMap { this deadNeighboursOf it }.filter {
-            val livingNeighbours = (this livingNeighboursOf it)
-            println("Cell: " + it)
-            println("LivingNeighbours: " + livingNeighbours)
-            (livingNeighbours.size == 3)
-        }.toSet()
-    }
+        get() = this.flatMap { this deadNeighboursOf it }.filter { (this livingNeighboursOf it).size == 3 }.toSet()
 
-private infix fun Population.deadNeighboursOf(cell: Cell) : Population {
-    val deadNeighbours = (cell.neighbours).filter { !this.contains(it) }.toSet()
-    println("Cell: " + cell)
-    println("DNs: " + deadNeighbours)
-    return deadNeighbours
-}
+private infix fun Population.deadNeighboursOf(cell: Cell) : Population
+        = (cell.neighbours).filter { !this.contains(it) }.toSet()
 
 private val Cell.neighbours : Population
     get() =  setOf( Cell(this.x-1, this.y-1), Cell(this.x-1, this.y), Cell(this.x-1, this.y+1),
