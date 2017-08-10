@@ -18,16 +18,7 @@ private infix fun Population.livingNeighboursOf(cell: Cell) : Population
         = this.filter { it isNeighbourOf cell }.toSet()
 
 private infix fun Cell.isNeighbourOf(cell:Cell)
-        = this != cell && this isInNeighbouringRangeOf cell
-
-private infix fun Cell.isInNeighbouringRangeOf(cell: Cell)
-        = this isInHorizontalNeighbouringRangeOf cell && this isInVerticalNeighbouringRangeOf cell
-
-private infix fun Cell.isInHorizontalNeighbouringRangeOf(cell: Cell)
-        = this.x - cell.x in -1..1
-
-private infix fun Cell.isInVerticalNeighbouringRangeOf(cell: Cell)
-        = this.y - cell.y in -1..1
+        = cell.neighbours.contains(this)
 
 private val Population.newBirths: Population
         get() = this.flatMap { this deadNeighboursOf it }.filter { (this livingNeighboursOf it).size == 3 }.toSet()
