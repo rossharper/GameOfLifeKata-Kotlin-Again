@@ -2,8 +2,10 @@ typealias Population = Set<Cell>
 fun populationOf(vararg cells: Cell) : Population = setOf(*cells)
 
 class Life(val population: Population) {
-    fun evolved() = Life(population.survivors.union(population.newBirths))
+    fun evolved() = Life(population.survivors and population.newBirths)
 }
+
+private infix fun Population.and(population: Population) : Population = this.union(population)
 
 private val Population.survivors : Population
         get() = this.filter { it shouldSurviveEvolutionOfPopulation this }.toSet()
