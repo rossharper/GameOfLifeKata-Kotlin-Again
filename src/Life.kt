@@ -29,6 +29,11 @@ private infix fun Population.deadNeighboursOf(cell: Cell) : Population
         = (cell.neighbours).filter { !this.contains(it) }.toSet()
 
 private val Cell.neighbours : Population
-    get() =  setOf( Cell(this.x-1, this.y-1), Cell(this.x-1, this.y), Cell(this.x-1, this.y+1),
-                    Cell(this.x, this.y-1)                          , Cell(this.x, this.y+1),
-                    Cell(this.x+1, this.y-1), Cell(this.x+1, this.y), Cell(this.x+1, this.y+1))
+    get() =  setOf( this.above.left, this.above, this.above.right,
+                    this.left,                   this.right,
+                    this.below.left, this.below, this.below.right)
+
+private val Cell.above  get() = Cell(this.x,    this.y-1)
+private val Cell.below  get() = Cell(this.x,    this.y+1)
+private val Cell.left   get() = Cell(this.x-1,  this.y)
+private val Cell.right  get() = Cell(this.x+1,  this.y)
